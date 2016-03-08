@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="conteudo">
+		<h:form id="formListagem">
+			<p:panel header="Estados">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro Encontrado"
+					paginator="true" rows="5">
+					<f:facet name="footer">
+						<p:commandButton value="Novo"
+							oncomplete="PF ('dlgCadastro').show();" />
+					</f:facet>
+					<p:column headerText="Sigla">
+						<h:outputText value="" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<h:outputText value="" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash">
+						</p:commandButton>
+						<p:commandButton icon="ui-icon-pancil"></p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+		<p:dialog header="Cadastro-Estado" widgetVar="dlgCadastro"
+			modal="true" resizable="false" draggable="false">
+			<h:form id="formCadastro">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Sigla:" />
+					<p:inputText value="" required="true"
+						requiredMessage="O Campo Sigla é Obrigatório" maxlength="2"
+						size="2" />
+
+					<p:outputLabel value="Nome:" />
+					<p:inputText value="" maxlength="30" size="50" />
+
+					<p:commandButton value="Salvar" />
+
+					<p:commandButton value="Sair" onclick="PF ('dlgCadastro').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>
