@@ -8,32 +8,67 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF8" />
 	<title>Cuidador Já</title>
+
+	<style type="text/css">
+.ui-layout-north {
+	z-index: 20 !important;
+	overflow: visible !important;;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+	overflow: visible !important;
+}
+</style>
 </h:head>
 <h:body>
+	<script>
+
+	function moeda(z){
+		v = z.value;
+		v=v.replace(/\D/g,"") // permite digitar apenas numero
+		v=v.replace(/(\d{1})(\d{14})$/,"$1.$2") // coloca ponto antes dos ultimos digitos
+		v=v.replace(/(\d{1})(\d{11})$/,"$1.$2") // coloca ponto antes dos ultimos 11 digitos
+		v=v.replace(/(\d{1})(\d{8})$/,"$1.$2") // coloca ponto antes dos ultimos 8 digitos
+		v=v.replace(/(\d{1})(\d{5})$/,"$1.$2") // coloca ponto antes dos ultimos 5 digitos
+		v=v.replace(/(\d{1})(\d{1,2})$/,"$1,$2") // coloca virgula antes dos ultimos 2 digitos
+		z.value = v;
+		}
+
+	</script>
 	<p:growl id="mensagem" />
 	<p:layout fullPage="true">
 		<p:layoutUnit position="north" resizable="false" closable="false"
 			collapsed="false" header="Sistema de Gerenciamento Cuidadores Já!"
 			style="text-align:center">
-		</p:layoutUnit>
 
-		<p:layoutUnit position="west" resizable="true" closable="false"
-			collapsed="false">
-			<h:form id="template">
-				<p:panelMenu>
+			<h:form id="formTemplate">
+				<p:menubar id="panel">
 					<p:submenu label="Arquivo">
-					<p:menuitem value="Home" outcome="/pages/principal.xhtml" />
-						<p:menuitem value="Autenticação" />
-						<p:menuitem value="Sair" />
+						<p:menuitem value="Home" outcome="/pages/principal.xhtml"
+							icon="ui-icon-home" update=":template:panel" />
+						<p:menuitem value="Login" icon="ui-icon-login" />
+						<p:menuitem value="Sair" icon="ui-icon-close" />
 					</p:submenu>
 
 					<p:submenu label="Cadastro">
-						<p:menuitem value="Primeiro Acesso" />
-						<p:menuitem value="Estado" outcome="/pages/estados.xhtml" />
-						<p:menuitem value="Cidade" outcome="/pages/cidades.xhtml" />
+						<p:menuitem value="Primeiro Acesso" outcome="/pages/pessoas.xhtml"
+							icon="ui-icon-plus" />
+						<p:menuitem value="Estado" outcome="/pages/estados.xhtml"
+							icon="ui-icon-plus" />
+						<p:menuitem value="Cidade" outcome="/pages/cidades.xhtml"
+							icon="ui-icon-plus" />
 					</p:submenu>
-				</p:panelMenu>
+
+					<p:submenu label="Serviço">
+						<p:menuitem value="Avaliação" icon="ui-icon-comment"
+							outcome="/pages/avaliacoes.xhtml" />
+					</p:submenu>
+				</p:menubar>
 			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" resizable="false" closable="false"
+			collapsed="false" size="200">
 		</p:layoutUnit>
 
 		<p:layoutUnit position="center" resizable="false" closable="false"
@@ -43,11 +78,11 @@
 
 		<p:layoutUnit position="south" resizable="false" closable="false"
 			collapsed="false" size="70">
-			<p style="font-size: 10px;">
+			<p style="font-size: 10px; text-align: center">
 				<b>Desenvolvido por:</b>
 			</p>
-			<p style="font-size: 8px;">Copyright &copy;Agnaldo, Hugo, Luiz e
-				Michael - Projetos I</p>
+			<p style="font-size: 8px; text-align: center">Copyright &copy;
+				Agnaldo, Hugo, Luiz e Michael - Projetos I</p>
 
 		</p:layoutUnit>
 	</p:layout>
