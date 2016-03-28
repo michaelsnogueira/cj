@@ -10,42 +10,74 @@
 		<h:form id="formListagem">
 			<p:panel header="Estados">
 				<p:dataTable id="tabela" emptyMessage="Nenhum registro Encontrado"
-					paginator="true" rows="5">
+					paginator="true" rows="5" value="#{estadoBean.estados}"
+					var="cursor">
 					<f:facet name="footer">
-						<p:commandButton value="Novo"
-							oncomplete="PF ('dlgCadastro').show();" />
+						<p:commandButton value="Novo" actionListener="#{estadoBean.novo}"
+							oncomplete="PF ('dlgCadastro').show();"
+							update=":formCadastro:panel">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
 					</f:facet>
-					<p:column headerText="Sigla">
-						<h:outputText value="" />
+					<p:column headerText="Sigla" filterBy="#{cursor.sigla}"
+						sortBy="#{cursor.sigla}" filterMatchMode="contains">
+						<h:outputText value="#{cursor.sigla}" />
 					</p:column>
 
-					<p:column headerText="Nome">
-						<h:outputText value="" />
+					<p:column headerText="Nome" filterBy="#{cursor.nome}"
+						sortBy="#{cursor.nome}" filterMatchMode="contains">
+						<h:outputText value="#{cursor.nome}" />
 					</p:column>
 
 					<p:column headerText="Opções">
-						<p:commandButton icon="ui-icon-trash">
+						<p:commandButton icon="ui-icon-trash" title="Apagar"
+							actionListener="#{estadoBean.excluir}"
+							update=":mensagem :formListagem:tabela">
+							<p:confirm header="Confirmação"
+								message="Tem certeza que deseja apagar este registro?"
+								icon="ui-icon-alert" />
+							<f:attribute name="selecionaEstado" value="#{cursor}" />
 						</p:commandButton>
-						<p:commandButton icon="ui-icon-pancil"></p:commandButton>
+						<p:commandButton icon="ui-icon-pencil" title="Editar"
+							actionListener="#{estadoBean.buscar}"
+							oncomplete="PF('dlgCadastro').show();"
+							update=":formCadastro:panel">
+							<f:attribute name="selecionaEstado" value="#{cursor}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</p:panel>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</h:form>
 		<p:dialog header="Cadastro-Estados" widgetVar="dlgCadastro"
 			modal="true" resizable="false" draggable="false" appendTo="@(body)">
 			<h:form id="formCadastro">
-				<h:panelGrid columns="2">
-					<p:outputLabel value="Sigla:" />
-					<p:inputText value="" required="true"
-						requiredMessage="O Campo Sigla é Obrigatório" maxlength="2"
-						size="2" />
+				<h:panelGrid id="panel" columns="2">
+					<p:outputLabel for="sigla" value="Sigla:" />
+					<p:inputText id="sigla" value="#{estadoBean.estado.sigla}"
+						required="true" requiredMessage="O Campo 'Sigla' é Obrigatório"
+						maxlength="2" size="3" />
 
-					<p:outputLabel value="Nome:" />
-					<p:inputText value="" maxlength="30" size="50" />
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome" value="#{estadoBean.estado.nome}"
+						maxlength="30" size="50" required="true"
+						requiredMessage="O campo 'Nome' é Obrigatório" />
 
-					<p:commandButton value="Salvar" />
+					<p:commandButton value="Salvar"
+						actionListener="#{estadoBean.merge}"
+						update=":mensagem :formListagem:tabela :formCadastro:panel" />
 
-					<p:commandButton value="Sair" onclick="PF ('dlgCadastro').hide();" />
+					<p:commandButton value="Sair"
+						oncomplete="PF ('dlgCadastro').hide();"
+						actionListener="#{estadoBean.listar}" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

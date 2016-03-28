@@ -21,6 +21,6 @@
 	<!-- Temas do Prime face -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>hot-sneaks</param-value>
+		<param-value>afternoon</param-value>
 	</context-param>
 </web-app>
