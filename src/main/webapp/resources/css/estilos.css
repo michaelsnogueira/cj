@@ -1,5 +1,88 @@
 @CHARSET "UTF-8";
 
-.ui-widget, .ui-widget .ui-widget {
-	font-size: 90% !important;
+.divConteudo {
+	color: rgba(0, 0, 0, 1);
+	font-family: Arial, sans-serif;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, .9);
+}
+
+.ui-layout-west .ui-layout-unit-content {
+	background-color: rgb(235, 235, 235);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, .8);
+}
+
+.ui-layout-center .ui-layout-unit-content {
+	background-color: rgb(245, 243, 243);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, .8);
+}
+
+.menu {
+	background-color: rgb(0, 0, 0);
+	box-shadow: 10px 8px 10px rgba(0, 0, 0, .8);
+	text-shadow: 2px 2px 5px silver;
+}
+
+.rodape {
+	padding: 1px;
+	text-shadow: 2px 2px 5px silver;
+}
+
+.interface p {
+	color: black;
+	font-style: inherit;
+	text-shadow: 1px 1px 1px black;
+}
+
+.imagemCentralizada {
+	opacity: 0.25;
+	position: absolute;
+	top: 1px;
+	width: 100%;
+	height: 628px;
+}
+
+.imagemMenu {
+	position: relative;
+	top: 160px;
+}
+
+.fundo {
+	display: block;
+	width: 350px;
+	float: right;
+	background-color: #dddddd;
+	padding: 5px;
+	margin-top: 5px;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
+}
+
+.direita {
+	text-align: right;
+	text-shadow: 5px 5px 10px silver;
+}
+
+.top {
+	text-shadow: 5px 5px 10px black;
+}
+
+.topConteudo {
+	text-shadow: 1px 1px 10px black;
+}
+
+.interface h2 {
+	font-size: 13pt;
+	color: rgb(255, 255, 255);
+	background-color: rgb(89, 81, 82);
+	padding: 5px 0px 5px 10px;
+	margin: 10px 0px 10px 0px;
+	box-shadow: 10px 8px 10px rgba(0, 0, 0, .9);
+}
+
+.marcaMenu {
+	font-size: 13pt;
+	color: rgb(255, 255, 255);
+	background-color: rgb(89, 81, 82);
+	padding: 5px 0px 5px 10px;
+	margin: 10px 0px 10px 0px;
+	box-shadow: 10px 8px 10px rgba(0, 0, 0, .9);
 }

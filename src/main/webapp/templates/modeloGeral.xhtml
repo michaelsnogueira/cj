@@ -9,19 +9,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<h:outputStylesheet library="css" name="estilos.css" />
 	<title>Cuidador Já</title>
-
-	<style type="text/css">
-.ui-layout-north {
-	z-index: 20 !important;
-	overflow: visible !important;;
-}
-
-.ui-layout-north .ui-layout-unit-content {
-	overflow: visible !important;
-}
-</style>
 </h:head>
-<h:body>
+<h:body styleClass="fundo">
 	<script>
 
 	function moeda(z){
@@ -40,52 +29,66 @@
 	<p:layout fullPage="true">
 		<p:layoutUnit position="north" resizable="false" closable="false"
 			collapsed="false" header="Sistema de Gerenciamento Cuidadores Já!"
-			style="text-align:center">
-
-			<h:form id="formTemplate">
-				<p:menubar id="panel">
-					<p:submenu label="Arquivo">
-						<p:menuitem value="Home" outcome="/pages/principal.xhtml"
-							icon="ui-icon-home" update=":template:panel" />
-						<p:menuitem value="Login" icon="ui-icon-login" />
-						<p:menuitem value="Sair" icon="ui-icon-close"
-							outcome="/pages/principal.xhtml" />
-					</p:submenu>
-
-					<p:submenu label="Cadastro">
-						<p:menuitem value="Primeiro Acesso" outcome="/pages/pessoas.xhtml"
-							icon="ui-icon-plus" />
-						<p:menuitem value="Estado" outcome="/pages/estados.xhtml"
-							icon="ui-icon-plus" />
-						<p:menuitem value="Cidade" outcome="/pages/cidades.xhtml"
-							icon="ui-icon-plus" />
-					</p:submenu>
-
-					<p:submenu label="Serviço">
-						<p:menuitem value="Avaliação" icon="ui-icon-comment"
-							outcome="/pages/avaliacoes.xhtml" />
-					</p:submenu>
-				</p:menubar>
-			</h:form>
+			style="text-align:center" styleClass="topConteudo">
 		</p:layoutUnit>
 
 		<p:layoutUnit position="west" resizable="false" closable="false"
-			collapsed="false" size="200">
+			collapsed="false" size="220" style="text-align:center">
+			<div class="marcaMenu">Menu</div>
+			<div id="cabecalho" class="menu">
+				<h:form id="formTemplate">
+					<h:panelGrid columns="1">
+						<p:menubar id="panel">
+							<p:submenu label="Arquivo">
+								<p:menuitem value="Home" outcome="/pages/principal.xhtml"
+									icon="ui-icon-home" update=":template:panel" />
+								<p:menuitem value="Login" icon="ui-icon-login" />
+								<p:menuitem value="Sair" icon="ui-icon-close"
+									outcome="/pages/principal.xhtml" />
+							</p:submenu>
+
+							<p:submenu label="Cadastro">
+								<p:menuitem value="Primeiro Acesso"
+									outcome="/pages/pessoas.xhtml" icon="ui-icon-plus" />
+								<p:menuitem value="Estado" outcome="/pages/estados.xhtml"
+									icon="ui-icon-plus" />
+								<p:menuitem value="Cidade" outcome="/pages/cidades.xhtml"
+									icon="ui-icon-plus" />
+							</p:submenu>
+
+							<p:submenu label="Serviço">
+								<p:menuitem value="Avaliação" icon="ui-icon-comment"
+									outcome="/pages/avaliacoes.xhtml" />
+							</p:submenu>
+						</p:menubar>
+					</h:panelGrid>
+				</h:form>
+			</div>
+
+			<div id="topo" class="divTopo">
+				<p:graphicImage library="images" name="idoso3.png"
+					styleClass="imagemMenu" />
+			</div>
 		</p:layoutUnit>
 
-		<p:layoutUnit position="center" resizable="false" closable="false"
-			collapsed="false">
-			<ui:insert name="conteudo" />
-		</p:layoutUnit>
+		<div id="conteudo" class="divConteudo">
+			<p:layoutUnit position="center" resizable="false" closable="false"
+				collapsed="false" styleClass="divConteudo">
+				<ui:insert name="conteudo" />
+			</p:layoutUnit>
+		</div>
 
 		<p:layoutUnit position="south" resizable="false" closable="false"
-			collapsed="false" size="70">
-			<p style="font-size: 10px; text-align: center">
-				<b>Desenvolvido por:</b>
-			</p>
-			<p style="font-size: 8px; text-align: center">Copyright &copy;
-				Agnaldo, Hugo, Luiz e Michael - Projetos I</p>
-
+			collapsed="false" size="70" styleClass="divConteudo">
+			<div class="rodape">
+				<p style="font-size: 10px; text-align: center">
+					<b>Desenvolvido por:</b>
+				</p>
+				<p style="font-size: 8px; text-align: center">
+					Copyright &copy;<span style="font-weight: bold;">Agnaldo,
+						Hugo, Luiz e Michael - Projetos I</span>
+				</p>
+			</div>
 		</p:layoutUnit>
 	</p:layout>
 </h:body>
