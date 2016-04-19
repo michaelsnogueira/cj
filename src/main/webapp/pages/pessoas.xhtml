@@ -8,64 +8,110 @@
 <ui:composition template="/templates/modeloGeral.xhtml">
 	<ui:define name="conteudo">
 
-		<p:panel header="Cadastro - Pessoa" style="text-align:center" />
+		<p:panel header="Cadastro - Pessoa" style="text-align:center"
+			styleClass="topConteudo" />
 		<div align="center">
 			<h:form id="formCadastro">
-				<h:panelGrid columns="2">
-					<p:outputLabel value="Nome:" />
-					<p:inputText value="" maxlength="50" size="30" />
+				<h:panelGrid id="panel" columns="2">
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome" value="#{pessoaBean.pessoa.nome}"
+						maxlength="50" size="30" required="false"
+						requiredMessage="O campo Nome é Obrigatório" />
 
-					<p:outputLabel value="CPF:" />
-					<p:inputMask mask="999.999.999-99" value="" maxlength="14"
-						size="14" />
+					<p:outputLabel for="cpf" value="CPF:" />
+					<p:inputMask id="cpf" mask="999.999.999-99"
+						value="#{pessoaBean.pessoa.cpf}" maxlength="14" size="14"
+						required="false" requiredMessage="O campo CPF é obrigatório" />
 
-					<p:outputLabel value="CEP:" />
-					<p:inputMask mask="99999-999" value="" />
+					<p:outputLabel for="cep" value="CEP:" />
+					<p:inputMask id="cep" mask="99999-999"
+						value="#{pessoaBean.pessoa.cep}" maxlength="9" size="11"
+						required="false" requiredMessage="O campo CEP é Obrigatório" />
 
-					<p:outputLabel value="Endereco" />
-					<p:inputText value="" maxlength="50" size="30" />
+					<p:outputLabel for="endereco" value="Endereco" />
+					<p:inputText id="endereco" value="#{pessoaBean.pessoa.endereco}"
+						maxlength="50" size="30" required="false"
+						requiredMessage="O campo Endereço é Obrigatório" />
 
-					<p:outputLabel value="complemento:" />
-					<p:inputText value="" maxlength="20" size="15" />
+					<p:outputLabel value="Complemento:" />
+					<p:inputText id="complemento"
+						value="#{pessoaBean.pessoa.complemento}" maxlength="20" size="15" />
 
-					<p:outputLabel value="Telefone:" />
-					<p:inputMask mask="(99)9999-9999" maxlength="12" size="14" />
+					<p:outputLabel for="telefone" value="Telefone:" />
+					<p:inputMask id="telefone" mask="(99)9999-9999"
+						value="#{pessoaBean.pessoa.telefone}" maxlength="12" size="14"
+						required="false" requiredMessage="O campo Telefone é Obrigatório" />
 
-					<p:outputLabel value="Celular:" />
-					<p:inputMask mask="(99)9999-9999" maxlength="12" size="14" />
+					<p:outputLabel for="celular" value="Celular:" />
+					<p:inputMask id="celular" mask="(99)9999-9999"
+						value="#{pessoaBean.pessoa.celular}" maxlength="12" size="14"
+						required="false" requiredMessage="O campo Celular é Obrigatório" />
 
-					<p:outputLabel value="E-mail:" />
-					<p:inputText value="" maxlength="30" size="20" />
+					<p:outputLabel for="email" value="E-mail:" />
+					<p:inputText id="email" value="#{pessoaBean.pessoa.email}"
+						maxlength="30" size="20" required="false"
+						requiredMessage="O campo Email é Obrigatório"
+						converterMessage="Email invalido">
+						<f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
+					</p:inputText>
 
-					<p:outputLabel value="Estado:" />
-					<p:selectOneMenu value="" filter="true">
-						<f:selectItem itemLabel="Selecione um Estado"
-							noSelectionOption="true" />
-						<f:selectItems value="" var="" itemValue="" itemLabel="" />
+					<p:outputLabel for="estado" value="Estado:" />
+					<p:selectOneMenu id="estado" filter="true" required="false"
+						requiredMessage="O campo 'Estado' é Obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{pessoaBean.estado}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um Estado" />
+						<f:selectItems value="#{pessoaBean.estados}" var="cursor"
+							itemLabel="#{cursor.nome}" itemValue="#{cursor}"></f:selectItems>
+						<p:ajax listener="#{pessoaBean.popular}"
+							update=":mensagem :formCadastro:cidade" />
 					</p:selectOneMenu>
 
-					<p:outputLabel value="Cidade:" />
-					<p:selectOneMenu value="" filter="true">
-						<f:selectItem itemLabel="Selecione um Estado"
+					<p:outputLabel for="cidade" value="Cidade:" />
+					<p:selectOneMenu id="cidade" value="#{pessoaBean.pessoa.cidade}"
+						filter="true" required="false"
+						requiredMessage="O campo Cidade é Obrigatório"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem itemLabel="Selecione uma Cidade"
 							noSelectionOption="true" />
-						<f:selectItems value="" var="" itemValue="" itemLabel="" />
+						<f:selectItems value="#{pessoaBean.cidades}" var="cursor"
+							itemValue="#{cursor}" itemLabel="#{cursor.nome}" />
 					</p:selectOneMenu>
 
-					<p:outputLabel value="Data Nascimento:" />
-					<p:calendar pattern="dd/MM/yyyy" />
+					<p:outputLabel for="data" value="Data Nascimento:" />
+					<p:calendar id="data" value="#{pessoaBean.pessoa.dataNacimento}"
+						pattern="dd/MM/yyyy" mask="true" required="false" locale="pt_BR"
+						requiredMessage="O Campo data é Obrigatório" />
 
 					<p:outputLabel value="Tipo:" />
-					<p:selectOneMenu value="" filter="true">
+					<p:selectOneMenu value="#{pessoaBean.pessoa.tipo}" filter="true">
 						<f:selectItem itemLabel="Selecione um Tipo"
 							noSelectionOption="true" />
-						<f:selectItem itemLabel="Cuidador" />
-						<f:selectItem itemLabel="Contratante" />
+						<f:selectItem itemLabel="Cuidador" itemValue="T" />
+						<f:selectItem itemLabel="Contratante" itemValue="C" />
+						<p:ajax update=":mensagem :formCadastro:salvar" />
 					</p:selectOneMenu>
-
+				</h:panelGrid>
+				<h:panelGrid id="salvar" columns="2">
 
 					<p:commandButton value="Salvar"
-						oncomplete="PF('dlgCadastroCuid').show();" />
-					<p:commandButton value="Limpar" />
+						actionListener="#{pessoaBean.carrega}" process="@form"
+						rendered="#{pessoaBean.pessoa.tipo == 'T'.charAt(0)}"
+						oncomplete="verificar(xhr, status, args,'dlgCadastroCuid')"
+						update=":mensagem :formCadastroCuidador:panel3 " />
+					<p:commandButton value="Limpar"
+						rendered="#{pessoaBean.pessoa.tipo == 'T'.charAt(0)}"
+						actionListener="#{pessoaBean.novo}"
+						update=":mensagem :formCadastro:panel" process="@this" />
+
+					<p:commandButton value="Salvar" process="@form"
+						rendered="#{pessoaBean.pessoa.tipo == 'C'.charAt(0)}"
+						oncomplete="PF('dlgCadastroCont').show();" update=":mensagem" />
+					<p:commandButton value="Limpar"
+						rendered="#{pessoaBean.pessoa.tipo == 'C'.charAt(0)}"
+						actionListener="#{pessoaBean.novo}"
+						update=":mensagem :formCadastro:panel" process="@this" />
 
 				</h:panelGrid>
 			</h:form>
@@ -73,47 +119,25 @@
 
 		<p:dialog widgetVar="dlgCadastroCont" header="Cadastro-Contratante"
 			closable="false" resizable="false" draggable="false" modal="true"
-			appendTo="@(body)">
+			appendTo="@(body)" styleClass="topConteudo">
 			<h:form id="formCadastroContratante">
 				<h:panelGrid columns="2">
 
-					<p:outputLabel value="É o Pacitente?" />
-					<p:selectOneRadio value="">
-						<f:selectItem itemLabel="Sim" itemValue="true" />
-						<f:selectItem itemLabel="Não" itemValue="false" />
-					</p:selectOneRadio>
+					<h:outputLabel for="pwd1" value="Senha: *" />
+					<p:password id="pwd1" value="" match="pwd2" label="Password 1"
+						required="false" />
 
-					<p:outputLabel value="Nome Pacitente:" />
-					<p:inputText value="" maxlength="50" size="30" />
+					<h:outputLabel for="pwd2" value="Confirma Senha: *" />
+					<p:password id="pwd2" value="" label="Password 2" required="false" />
 
-					<p:outputLabel value="Celular Paciente:" />
-					<p:inputText value="" maxlength="12" size="14" />
+					<p:outputLabel for="nomePaciente" value="Nome Paciente: *" />
+					<p:inputText id="nomePaciente" value="" maxlength="50" size="30"
+						required="false"
+						requiredMessage="O Campo Nome Paciente é Obrigatório" />
 
-					<p:outputLabel value="Nome Contratante:" />
-					<p:inputText value="" maxlength="50" size="30" />
-
-					<p:outputLabel value="Celular Paciente:" />
-					<p:inputMask mask="(99)9999-9999" maxlength="12" size="14" />
-
-					<p:outputLabel value="Nome Pacitente:" />
-					<p:inputText value="" maxlength="50" size="30" />
-
-					<p:outputLabel value="Telefone:" />
-					<p:inputMask mask="(99)9999-9999" maxlength="12" size="14" />
-
-					<p:outputLabel value="Celular:" />
-					<p:inputMask mask="(99)9999-9999" maxlength="12" size="14" />
-
-					<h:outputText />
-					<h:outputText id="display" style="font-size: 10px" />
-
-					<p:outputLabel value="Descrição Paciente:" />
-					<p:inputTextarea rows="5" cols="30" counter="display"
-						maxlength="300" counterTemplate="{0} Caracteres"
-						autoResize="false" />
-
-					<p:outputLabel value="Doença Paciente:" />
-					<p:inputText value="" maxlength="50" size="30" />
+					<p:outputLabel for="tel" value="Telefone Paciente:" />
+					<p:inputMask id="tel" mask="(99)9999-9999" maxlength="12" size="14"
+						required="true" requiredMessage="O Campo Telefone é Obrigatório" />
 
 				</h:panelGrid>
 
@@ -127,28 +151,41 @@
 
 		<p:dialog widgetVar="dlgCadastroCuid" header="Cadastro-Cuidador"
 			closable="false" resizable="false" draggable="false" modal="true"
-			appendTo="@(body)">
+			appendTo="@(body)" styleClass="topConteudo">
 			<h:form id="formCadastroCuidador">
-				<h:panelGrid columns="2">
+				<h:panelGrid id="panel3" columns="2">
 					<p:outputLabel value="Nome:" />
-					<p:outputLabel value="Cuidador" />
+					<p:outputLabel value="#{pessoaBean.cuidador.pessoa.nome}" />
 
-					<p:outputLabel value="Liberado:" />
-					<p:selectOneRadio value="">
+					<h:outputLabel for="pwwd1" value="Senha: *" />
+					<p:password id="pwwd1" value="" match="pwwd2" label="Password 1"
+						required="false" />
+
+					<h:outputLabel for="pwwd2" value="Confirma Senha: *" />
+					<p:password id="pwwd2" value="" label="Password 2" required="false" />
+
+
+					<p:outputLabel for="liberado" value="Liberado para Trabalhar?" />
+					<p:selectOneRadio id="liberado"
+						value="#{pessoaBean.cuidador.liberado}" required="false"
+						requiredMessage="O campo Liberado é Obrigatório">
 						<f:selectItem itemLabel="Sim" itemValue="true" />
 						<f:selectItem itemLabel="Não" itemValue="false" />
 					</p:selectOneRadio>
 
-					<p:outputLabel value="Disponibilidade:" />
-					<p:selectCheckboxMenu label="Selecione" panelStyle="width:150px">
-						<f:selectItem itemLabel="Manhã" itemValue="" />
-						<f:selectItem itemLabel="Tarde" itemValue="" />
-						<f:selectItem itemLabel="Noite" itemValue="" />
-					</p:selectCheckboxMenu>
+					<p:outputLabel for="disponibilidade" value="Disponibilidade:" />
+					<p:selectManyCheckbox id="disponibilidade"
+						value="#{pessoaBean.periodosSelecionados}" layout="grid"
+						columns="3" required="false"
+						requiredMessage="O campo Disponibilidade é Obrigatório">
+						<f:selectItems value="#{pessoaBean.periodos}" />
+						<p:ajax listener="#{pessoaBean.listaDisponibilidade}" />
+					</p:selectManyCheckbox>
 
-					<p:outputLabel value="Valor Contração ao Dia:" />
-					<p:inputText value="" maxlength="6" size="12"
-						onkeypress="moeda(this);">
+					<p:outputLabel for="valor" value="Valor Contração ao Dia:" />
+					<p:inputText id="valor"
+						value="#{pessoaBean.cuidador.valorDiaContratacao}" maxlength="6"
+						size="12" onkeypress="moeda(this);">
 						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
 						<f:validateDoubleRange minimum="1" maximum="999999" />
 					</p:inputText>
@@ -160,37 +197,45 @@
 
 				<p style="font-size: 20px; text-align: center">Experiência</p>
 
-				<h:panelGrid columns="2">
+				<h:panelGrid id="painelExperiencia" columns="2">
 					<p:outputLabel value="Nome Paciente:" />
-					<p:inputText value="" />
+					<p:inputText value="#{pessoaBean.cuidador.nomePaciente}" />
 
 
 					<p:outputLabel value="Telefone Paciente:" />
-					<p:inputMask mask="(99)9999-9999" maxlength="12" size="14" />
+					<p:inputMask mask="(99)9999-9999"
+						value="#{pessoaBean.cuidador.telefonePaciente}" maxlength="12"
+						size="14" />
 
 					<p:outputLabel value="Período Inicial:" />
-					<p:calendar pattern="dd/MM/yyyy" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" locale="pt_BR"
+						value="#{pessoaBean.cuidador.periodoInicial}" />
 
 					<p:outputLabel value="Período Final:" />
-					<p:calendar pattern="dd/MM/yyyy" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" locale="pt_BR"
+						value="#{pessoaBean.cuidador.periodoFinal}" />
 
-					<p:outputLabel value="Trabalha aqui:" />
-					<p:selectOneRadio value="">
-						<f:selectItem itemLabel="Sim" itemValue="true" />
-						<f:selectItem itemLabel="Não" itemValue="false" />
-					</p:selectOneRadio>
+<!-- 										<p:outputLabel value="Trabalha aqui:" /> -->
+<!-- 										<p:selectOneRadio value="#{pessoaBean.cuidador.trabalhoAqui}"> -->
+<!-- 											<f:selectItem itemLabel="Sim" itemValue="true" /> -->
+<!-- 											<f:selectItem itemLabel="Não" itemValue="false" /> -->
+<!-- 										</p:selectOneRadio> -->
 
-					<h:outputText />
+<!-- 					<h:outputText /> -->
 					<h:outputText id="display" style="font-size: 10px" />
 
 					<p:outputLabel value="O que foi Feito:" />
-					<p:inputTextarea rows="5" cols="30" counter="display"
-						maxlength="300" counterTemplate="{0} Caracteres"
-						autoResize="false" />
+					<p:inputTextarea value="#{pessoaBean.cuidador.descricao}" rows="5"
+						cols="30" counter="display" maxlength="300"
+						counterTemplate="{0} Caracteres" autoResize="false" />
 				</h:panelGrid>
 
 				<p:commandButton value="Adicionar" style="font-size: 10px"
-					title="Clique para Add uma nova Experiência" oncomplete="" />
+					title="Clique para Add uma nova Experiência"
+					actionListener="#{pessoaBean.armazenaPaciente}"
+					update=":mensagem :formCadastroCuidador:painelExperiencia :formCadastroCuidador:adicionado" />
+				<p:outputLabel id="adicionado"
+					value="#{pessoaBean.contador} Adicionado(s)" />
 
 				<p:separator />
 

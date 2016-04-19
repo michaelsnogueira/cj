@@ -77,6 +77,7 @@ public class CidadeBean implements Serializable {
 		try {
 			cidadeDAO.merge(cidade);
 			Messages.addGlobalInfo("Cidade Salva com Sucesso");
+			novo();
 			cidades = cidadeDAO.listar("nome");
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Erro ao tentar salvar a 'Cidade'");

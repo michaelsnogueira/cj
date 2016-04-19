@@ -25,7 +25,7 @@ public class Pessoa extends GenericDomain {
 	@Column(nullable = false, length = 50)
 	private String endereco;
 
-	@Column(nullable = false, length = 30)
+	@Column(nullable = true, length = 30)
 	private String complemento;
 
 	@Column(nullable = false, length = 14)

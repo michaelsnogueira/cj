@@ -9,19 +9,22 @@
 <ui:composition template="/templates/modeloGeral.xhtml">
 	<ui:define name="conteudo">
 		<h:form id="formListagem">
-			<p:panel header="Listagem-Avaliação" style="text-align:center">
+			<p:panel header="Listagem-Avaliação" style="text-align:center"
+				styleClass="topConteudo">
 				<p:dataTable emptyMessage="Nenhum registro encontrado" rows="5"
-					paginator="5">
+					paginator="5" value="#{avaliacaoBean.contratacoes}" var="cursor">
 					<p:column headerText="Nome Cuidador">
-						<h:outputText value="" />
+						<h:outputText value="#{cursor.cuidador.pessoa.nome}" />
 					</p:column>
 
 					<p:column headerText="Nome Paciente">
-						<h:outputText value="" />
+						<h:outputText value="#{cursor.contratante.pessoa.nome}" />
 					</p:column>
 					<p:column headerText="Opções">
 						<p:commandButton icon="ui-icon-pencil" title="Avaliar Cuidador"
-							oncomplete="PF('dlgAvaliacao').show();" />
+							oncomplete="PF('dlgAvaliacao').show();">
+							<f:attribute name="selecionaAvaliacao" value="#{cursor}"></f:attribute>
+						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</p:panel>
@@ -29,7 +32,7 @@
 
 		<p:dialog header="Avaliação-Cuidador" widgetVar="dlgAvaliacao"
 			draggable="false" resizable="false" closable="falae" modal="true"
-			visible="false" appendTo="@(body)">
+			visible="false" appendTo="@(body)" styleClass="topConteudo">
 			<h:form>
 				<h:panelGrid columns="2" cellpadding="5">
 					<p:outputLabel value="Nota:" />

@@ -9,54 +9,63 @@
 <ui:composition template="/templates/modeloGeral.xhtml">
 	<ui:define name="conteudo">
 		<h:form id="formListagem">
-			<p:dataTable id="tabela" rows="5" paginator="true"
-				emptyMessage="Nenhum Registro Encontrado"
-				value="#{cidadeBean.cidades}" var="cursor">
-				<f:facet name="footer">
-					<p:commandButton value="Novo"
-						oncomplete="PF('dlgCadastro').show();"
-						actionListener="#{cidadeBean.novo}"
-						update=":mensagem :formCadastro:panel">
-						<f:actionListener
-							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-					</p:commandButton>
-				</f:facet>
+			<p:panel header="Cidades" styleClass="topConteudo">
+				<p:dataTable id="tabela" rows="5" paginator="true"
+					emptyMessage="Nenhum Registro Encontrado"
+					value="#{cidadeBean.cidades}" var="cursor">
+					<f:facet name="footer">
+						<p:commandButton value="Novo"
+							oncomplete="PF('dlgCadastro').show();"
+							actionListener="#{cidadeBean.novo}"
+							update=":mensagem :formCadastro:panel">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
 
-				<p:column headerText="Estado" filterBy="#{cursor.estado.nome }"
-					filterMatchMode="contains" sortBy="#{cursor.estado.nome}">
-					<h:outputText
-						value="#{cursor.estado.nome} - #{cursor.estado.sigla}" />
-				</p:column>
+					<p:column headerText="Estado" filterBy="#{cursor.estado.nome }"
+						filterMatchMode="contains" sortBy="#{cursor.estado.nome}">
+						<h:outputText
+							value="#{cursor.estado.nome} - #{cursor.estado.sigla}" />
+					</p:column>
 
-				<p:column headerText="Nome" filterBy="#{cursor.nome}"
-					filterMatchMode="contains" sortBy="#{cursor.nome}">
-					<h:outputText value="#{cursor.nome}" />
-				</p:column>
+					<p:column headerText="Nome" filterBy="#{cursor.nome}"
+						filterMatchMode="contains" sortBy="#{cursor.nome}">
+						<h:outputText value="#{cursor.nome}" />
+					</p:column>
 
-				<p:column headerText="Opções">
-					<p:commandButton icon="ui-icon-trash"></p:commandButton>
-					<p:commandButton icon="ui-icon-pencil"></p:commandButton>
-				</p:column>
-			</p:dataTable>
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"></p:commandButton>
+						<p:commandButton icon="ui-icon-pencil"></p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
 		</h:form>
 
 		<p:dialog header="Cadastro-Cidades" widgetVar="dlgCadastro"
 			resizable="false" draggable="false" modal="true" closable="true"
-			appendTo="@(body)">
+			appendTo="@(body)" styleClass="topConteudo">
 			<h:form id="formCadastro">
 				<h:panelGrid id="panel" columns="2">
-					<p:outputLabel value="Estado:" />
-					<p:selectOneMenu value="#{cidadeBean.cidade.estado}" filter="true">
+					<p:outputLabel for="estado" value="Estado:" />
+					<p:selectOneMenu id="estado" value="#{cidadeBean.cidade.estado}"
+						filter="true" required="true"
+						requiredMessage="O campo Estado é Obrigatório"
+						converter="omnifaces.SelectItemsConverter">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione Um Estado" />
 						<f:selectItems value="#{cidadeBean.estados}" var="cursor"
 							itemLabel="#{cursor.nome}" itemValue="#{cursor}"></f:selectItems>
 					</p:selectOneMenu>
 
-					<p:outputLabel value="Nome:" />
-					<p:inputText value="" maxlength="30" size="30"></p:inputText>
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome" value="#{cidadeBean.cidade.nome}"
+						maxlength="30" size="30" required="true"
+						requiredMessage="O campo Nome é Obrigatório"></p:inputText>
 
-					<p:commandButton value="Salvar" />
+					<p:commandButton value="Salvar"
+						actionListener="#{cidadeBean.merge}"
+						update=":mensagem :formListagem:tabela :formCadastro:panel" />
 
 					<p:commandButton value="Fechar" onclick="PF('dlgCadastro').hide();" />
 				</h:panelGrid>

@@ -17,11 +17,7 @@ public class Avaliacao extends GenericDomain {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Cuidador cuidador;
-
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Contratante contratante;
+	private Contratacao contratacao;
 
 	public Integer getEstrelas() {
 		return estrelas;
@@ -39,20 +35,12 @@ public class Avaliacao extends GenericDomain {
 		this.descricao = descricao;
 	}
 
-	public Cuidador getCuidador() {
-		return cuidador;
+	public Contratacao getContratacao() {
+		return contratacao;
 	}
 
-	public void setCuidador(Cuidador cuidador) {
-		this.cuidador = cuidador;
-	}
-
-	public Contratante getContratante() {
-		return contratante;
-	}
-
-	public void setContratante(Contratante contratante) {
-		this.contratante = contratante;
+	public void setContratacao(Contratacao contratacao) {
+		this.contratacao = contratacao;
 	}
 
 }

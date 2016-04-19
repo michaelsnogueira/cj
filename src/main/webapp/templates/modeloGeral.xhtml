@@ -8,23 +8,11 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<h:outputStylesheet library="css" name="estilos.css" />
+	<h:outputStylesheet library="css" name="fontes.css" />
+	<h:outputScript library="js" name="scripts.js" />
 	<title>Cuidador Já</title>
 </h:head>
 <h:body styleClass="fundo">
-	<script>
-
-	function moeda(z){
-		v = z.value;
-		v=v.replace(/\D/g,"") // permite digitar apenas numero
-		v=v.replace(/(\d{1})(\d{14})$/,"$1.$2") // coloca ponto antes dos ultimos digitos
-		v=v.replace(/(\d{1})(\d{11})$/,"$1.$2") // coloca ponto antes dos ultimos 11 digitos
-		v=v.replace(/(\d{1})(\d{8})$/,"$1.$2") // coloca ponto antes dos ultimos 8 digitos
-		v=v.replace(/(\d{1})(\d{5})$/,"$1.$2") // coloca ponto antes dos ultimos 5 digitos
-		v=v.replace(/(\d{1})(\d{1,2})$/,"$1,$2") // coloca virgula antes dos ultimos 2 digitos
-		z.value = v;
-		}
-
-	</script>
 	<p:growl id="mensagem" />
 	<p:layout fullPage="true">
 		<p:layoutUnit position="north" resizable="false" closable="false"
@@ -42,7 +30,8 @@
 							<p:submenu label="Arquivo">
 								<p:menuitem value="Home" outcome="/pages/principal.xhtml"
 									icon="ui-icon-home" update=":template:panel" />
-								<p:menuitem value="Login" icon="ui-icon-login" />
+								<p:menuitem value="Login" icon="ui-icon-login"
+									outcome="/pages/autenticacao.xhtml" />
 								<p:menuitem value="Sair" icon="ui-icon-close"
 									outcome="/pages/principal.xhtml" />
 							</p:submenu>
@@ -59,6 +48,8 @@
 							<p:submenu label="Serviço">
 								<p:menuitem value="Avaliação" icon="ui-icon-comment"
 									outcome="/pages/avaliacoes.xhtml" />
+								<p:menuitem value="Contratar Cuidador" icon="ui-icon-comment"
+									outcome="/pages/contratacao.xhtml" />
 							</p:submenu>
 						</p:menubar>
 					</h:panelGrid>
@@ -66,7 +57,7 @@
 			</div>
 
 			<div id="topo" class="divTopo">
-				<p:graphicImage library="images" name="idoso3.png"
+				<p:graphicImage library="images" name="img-idoso.jpg"
 					styleClass="imagemMenu" />
 			</div>
 		</p:layoutUnit>

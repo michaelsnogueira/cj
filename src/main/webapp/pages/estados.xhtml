@@ -8,7 +8,7 @@
 <ui:composition template="/templates/modeloGeral.xhtml">
 	<ui:define name="conteudo">
 		<h:form id="formListagem">
-			<p:panel header="Estados">
+			<p:panel header="Estados" styleClass="topConteudo">
 				<p:dataTable id="tabela" emptyMessage="Nenhum registro Encontrado"
 					paginator="true" rows="5" value="#{estadoBean.estados}"
 					var="cursor">
@@ -50,7 +50,7 @@
 					</p:column>
 				</p:dataTable>
 			</p:panel>
-			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="topConteudo">
 				<p:commandButton value="Sim" type="button"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 				<p:commandButton value="Não" type="button"
@@ -58,7 +58,7 @@
 			</p:confirmDialog>
 		</h:form>
 		<p:dialog header="Cadastro-Estados" widgetVar="dlgCadastro"
-			modal="true" resizable="false" draggable="false" appendTo="@(body)">
+			modal="true" resizable="false" draggable="false" appendTo="@(body)" styleClass="topConteudo">
 			<h:form id="formCadastro">
 				<h:panelGrid id="panel" columns="2">
 					<p:outputLabel for="sigla" value="Sigla:" />
