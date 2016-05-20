@@ -15,22 +15,22 @@
 				<h:panelGrid id="panel" columns="2">
 					<p:outputLabel for="nome" value="Nome:" />
 					<p:inputText id="nome" value="#{pessoaBean.pessoa.nome}"
-						maxlength="50" size="30" required="false"
+						maxlength="50" size="30" required="true"
 						requiredMessage="O campo Nome é Obrigatório" />
 
 					<p:outputLabel for="cpf" value="CPF:" />
 					<p:inputMask id="cpf" mask="999.999.999-99"
 						value="#{pessoaBean.pessoa.cpf}" maxlength="14" size="14"
-						required="false" requiredMessage="O campo CPF é obrigatório" />
+						required="true" requiredMessage="O campo CPF é obrigatório" />
 
 					<p:outputLabel for="cep" value="CEP:" />
 					<p:inputMask id="cep" mask="99999-999"
 						value="#{pessoaBean.pessoa.cep}" maxlength="9" size="11"
-						required="false" requiredMessage="O campo CEP é Obrigatório" />
+						required="true" requiredMessage="O campo CEP é Obrigatório" />
 
 					<p:outputLabel for="endereco" value="Endereco" />
 					<p:inputText id="endereco" value="#{pessoaBean.pessoa.endereco}"
-						maxlength="50" size="30" required="false"
+						maxlength="50" size="30" required="true"
 						requiredMessage="O campo Endereço é Obrigatório" />
 
 					<p:outputLabel value="Complemento:" />
@@ -40,23 +40,23 @@
 					<p:outputLabel for="telefone" value="Telefone:" />
 					<p:inputMask id="telefone" mask="(99)9999-9999"
 						value="#{pessoaBean.pessoa.telefone}" maxlength="12" size="14"
-						required="false" requiredMessage="O campo Telefone é Obrigatório" />
+						required="true" requiredMessage="O campo Telefone é Obrigatório" />
 
 					<p:outputLabel for="celular" value="Celular:" />
 					<p:inputMask id="celular" mask="(99)9999-9999"
 						value="#{pessoaBean.pessoa.celular}" maxlength="12" size="14"
-						required="false" requiredMessage="O campo Celular é Obrigatório" />
+						required="true" requiredMessage="O campo Celular é Obrigatório" />
 
 					<p:outputLabel for="email" value="E-mail:" />
 					<p:inputText id="email" value="#{pessoaBean.pessoa.email}"
-						maxlength="30" size="20" required="false"
+						maxlength="30" size="20" required="true"
 						requiredMessage="O campo Email é Obrigatório"
 						converterMessage="Email invalido">
 						<f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
 					</p:inputText>
 
 					<p:outputLabel for="estado" value="Estado:" />
-					<p:selectOneMenu id="estado" filter="true" required="false"
+					<p:selectOneMenu id="estado" filter="true" required="true"
 						requiredMessage="O campo 'Estado' é Obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{pessoaBean.estado}">
@@ -70,7 +70,7 @@
 
 					<p:outputLabel for="cidade" value="Cidade:" />
 					<p:selectOneMenu id="cidade" value="#{pessoaBean.pessoa.cidade}"
-						filter="true" required="false"
+						filter="true" required="true"
 						requiredMessage="O campo Cidade é Obrigatório"
 						converter="omnifaces.SelectItemsConverter">
 						<f:selectItem itemLabel="Selecione uma Cidade"
@@ -81,11 +81,12 @@
 
 					<p:outputLabel for="data" value="Data Nascimento:" />
 					<p:calendar id="data" value="#{pessoaBean.pessoa.dataNacimento}"
-						pattern="dd/MM/yyyy" mask="true" required="false" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" required="true" locale="pt_BR"
 						requiredMessage="O Campo data é Obrigatório" />
 
 					<p:outputLabel value="Tipo:" />
-					<p:selectOneMenu value="#{pessoaBean.pessoa.tipo}" filter="true">
+					<p:selectOneMenu value="#{pessoaBean.pessoa.tipo}" filter="true"
+						required="true" requiredMessage="O campo Tipo é Obrigatório">
 						<f:selectItem itemLabel="Selecione um Tipo"
 							noSelectionOption="true" />
 						<f:selectItem itemLabel="Cuidador" itemValue="T" />
@@ -121,28 +122,40 @@
 			closable="false" resizable="false" draggable="false" modal="true"
 			appendTo="@(body)" styleClass="topConteudo">
 			<h:form id="formCadastroContratante">
-				<h:panelGrid columns="2">
+				<h:panelGrid id="panelContratante" columns="2">
 
 					<h:outputLabel for="pwd1" value="Senha: *" />
-					<p:password id="pwd1" value="" match="pwd2" label="Password 1"
-						required="false" />
+					<p:password id="pwd1" value="#{pessoaBean.usuario.senha}"
+						match="pwd2" label="Password 1" required="true"
+						validatorMessage="A Senha não é igual. Favor digitar a senha igual nos dois campos"
+						converterMessage="A Senha não é igual. Favor digitar a senha igual nos dois campos"
+						requiredMessage="O Campo Senha é Obrigatório" />
 
 					<h:outputLabel for="pwd2" value="Confirma Senha: *" />
-					<p:password id="pwd2" value="" label="Password 2" required="false" />
+					<p:password id="pwd2" value="#{pessoaBean.usuario.senha}"
+						label="Password 2" required="true"
+						validatorMessage="A Senha não é igual. Favor digitar a senha igual nos dois campos"
+						onverterMessage="A Senha não é igual. Favor digitar a senha igual nos dois campos"
+						requiredMessage="O Campo Senha é Obrigatório" />
 
-					<p:outputLabel for="nomePaciente" value="Nome Paciente: *" />
-					<p:inputText id="nomePaciente" value="" maxlength="50" size="30"
-						required="false"
+					<p:outputLabel for="nomePaciente" value="Nome Paciente:" />
+					<p:inputText id="nomePaciente"
+						value="#{pessoaBean.contratante.nomePaciente}" maxlength="50"
+						size="30" required="true"
 						requiredMessage="O Campo Nome Paciente é Obrigatório" />
 
 					<p:outputLabel for="tel" value="Telefone Paciente:" />
-					<p:inputMask id="tel" mask="(99)9999-9999" maxlength="12" size="14"
-						required="true" requiredMessage="O Campo Telefone é Obrigatório" />
+					<p:inputMask id="tel"
+						value="#{pessoaBean.contratante.telefonePaciente}"
+						mask="(99)9999-9999" maxlength="12" size="14" required="true"
+						requiredMessage="O Campo Telefone é Obrigatório" />
 
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar" />
+					<p:commandButton value="Salvar"
+						actionListener="#{pessoaBean.salvaContratante}"
+						update=":mensagem :formCadastroContratante:panelContratante :formCadastro:panel" />
 					<p:commandButton value="Cancelar"
 						onclick="PF('dlgCadastroCont').hide();" />
 				</h:panelGrid>
@@ -215,13 +228,13 @@
 					<p:calendar pattern="dd/MM/yyyy" mask="true" locale="pt_BR"
 						value="#{pessoaBean.cuidador.periodoFinal}" />
 
-<!-- 										<p:outputLabel value="Trabalha aqui:" /> -->
-<!-- 										<p:selectOneRadio value="#{pessoaBean.cuidador.trabalhoAqui}"> -->
-<!-- 											<f:selectItem itemLabel="Sim" itemValue="true" /> -->
-<!-- 											<f:selectItem itemLabel="Não" itemValue="false" /> -->
-<!-- 										</p:selectOneRadio> -->
+					<!-- 										<p:outputLabel value="Trabalha aqui:" /> -->
+					<!-- 										<p:selectOneRadio value="#{pessoaBean.cuidador.trabalhoAqui}"> -->
+					<!-- 											<f:selectItem itemLabel="Sim" itemValue="true" /> -->
+					<!-- 											<f:selectItem itemLabel="Não" itemValue="false" /> -->
+					<!-- 										</p:selectOneRadio> -->
 
-<!-- 					<h:outputText /> -->
+					<!-- 					<h:outputText /> -->
 					<h:outputText id="display" style="font-size: 10px" />
 
 					<p:outputLabel value="O que foi Feito:" />

@@ -11,12 +11,15 @@ import javax.faces.bean.ViewScoped;
 import org.omnifaces.util.Messages;
 
 import br.com.prj1.cj.dao.CidadeDAO;
+import br.com.prj1.cj.dao.ContratanteDAO;
 import br.com.prj1.cj.dao.EstadoDAO;
 import br.com.prj1.cj.dao.PessoaDAO;
 import br.com.prj1.cj.domain.Cidade;
+import br.com.prj1.cj.domain.Contratante;
 import br.com.prj1.cj.domain.Cuidador;
 import br.com.prj1.cj.domain.Estado;
 import br.com.prj1.cj.domain.Pessoa;
+import br.com.prj1.cj.domain.Usuario;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -31,6 +34,8 @@ public class PessoaBean implements Serializable {
 	private List<String> periodosSelecionados;
 	private List<Cuidador> cuidadores;
 	private Integer contador;
+	private Contratante contratante;
+	private Usuario usuario;
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -96,6 +101,22 @@ public class PessoaBean implements Serializable {
 		return contador;
 	}
 
+	public Contratante getContratante() {
+		return contratante;
+	}
+
+	public void setContratante(Contratante contratante) {
+		this.contratante = contratante;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 	@PostConstruct
 	public void novo() {
 		EstadoDAO estadoDAO = new EstadoDAO();
@@ -103,6 +124,8 @@ public class PessoaBean implements Serializable {
 		pessoa = new Pessoa();
 		estado = new Estado();
 		cuidador = new Cuidador();
+		contratante = new Contratante();
+		usuario = new Usuario();
 
 		cuidadores = new ArrayList<>();
 		contador = new Integer(0);
@@ -185,5 +208,30 @@ public class PessoaBean implements Serializable {
 	public void cancelarCadastro() {
 		cuidador = new Cuidador();
 		cuidadores = new ArrayList<>();
+	}
+
+	public void salvaContratante() {
+		PessoaDAO pessoaDAO = new PessoaDAO();
+
+		try {
+			pessoaDAO.salvar(pessoa);
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar salvar a Pessoa");
+			erro.printStackTrace();
+		}
+
+		usuario.setPessoa(pessoa);
+		contratante.setPessoa(pessoa);
+
+		ContratanteDAO contratanteDAO = new ContratanteDAO();
+
+		try {
+			contratanteDAO.salvar(contratante);
+			novo();
+			Messages.addGlobalInfo("O Cadastro foi salvo com sucesso");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar salvar o cadastro");
+			erro.printStackTrace();
+		}
 	}
 }
