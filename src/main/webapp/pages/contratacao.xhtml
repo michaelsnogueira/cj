@@ -9,14 +9,14 @@
 <ui:composition template="/templates/modeloGeral.xhtml">
 	<ui:define name="conteudo">
 		<h:form id="formListagem">
-			<p:panel header="Contratação" styleClass="topConteudo">
+			<p:panel id="panel" header="Contratação" styleClass="topConteudo">
 				<p:dataTable id="tabela" rows="5" paginator="true"
 					emptyMessage="Nenhum Registro Encontrado"
-					value="#{contratacaoBean.cuidadores}" var="cursor">
+					value="#{contratacaoBean.cuidadoresTela}" var="cursor">
 
 					<p:column headerText="Foto">
-						<p:graphicImage library="images" name="michael.jpg"
-							style="height: 200px" />
+						<p:graphicImage library="images"
+							name="#{cursor.pessoa.codigo}.png" style="height: 200px" />
 					</p:column>
 
 					<p:column headerText="Nome" filterBy="#{cursor.pessoa.nome}"
@@ -54,14 +54,14 @@
 						<p:commandButton icon="ui-icon-info"
 							title="Exibir experiência do Cuidador"
 							actionListener="#{contratacaoBean.buscaCuidador}"
-							onclick="PF('dlgExperiencia').show();"
-							update=":mensagem :formExperiencia:painelExperiencia">
+							update=":mensagem :formExperiencia:tabela2"
+							oncomplete="PF('dlgExperiencia').show();">
 							<f:attribute name="selecionaCuidador" value="#{cursor}"></f:attribute>
 						</p:commandButton>
 						<p:commandButton icon="ui-icon-comment"
 							title="Enviar uma Notificação"
 							actionListener="#{contratacaoBean.buscaCuidador}"
-							onclick="PF('dlgNotificacao').show();"
+							oncomplete="PF('dlgNotificacao').show();"
 							update=":mensagem :formNotificacao:painelNotificacao">
 							<f:attribute name="selecionaCuidador" value="#{cursor}"></f:attribute>
 						</p:commandButton>
@@ -79,32 +79,42 @@
 		<p:separator />
 
 		<p:dialog widgetVar="dlgExperiencia" header="Experiência"
-			closable="true" resizable="false" draggable="false" modal="true"
+			closable="true" resizable="false" draggable="true" modal="true"
 			appendTo="@(body)" styleClass="topConteudo">
 			<h:form id="formExperiencia">
-				<p:panelGrid id="painelExperiencia" columns="2">
-					<p:outputLabel value="Nome Paciente:" />
-					<p:outputLabel value="#{contratacaoBean.cuidador.nomePaciente}" />
+				<p:panel styleClass="topConteudo">
+					<p:dataTable id="tabela2" rows="5" paginator="true"
+						emptyMessage="Nenhum Registro Encontrado"
+						value="#{contratacaoBean.listaExperiencia}" var="cursor1">
+
+						<p:column headerText="Nome Paciente">
+							<h:outputText value="#{cursor1.nomePaciente}" />
+						</p:column>
 
 
-					<p:outputLabel value="Telefone Paciente:" />
-					<p:outputLabel value="#{contratacaoBean.cuidador.telefonePaciente}"
-						maxlength="12" size="14" />
+						<p:column headerText="Telefone Paciente">
+							<h:outputText value="#{cursor1.telefonePaciente}" maxlength="12"
+								size="14" />
+						</p:column>
 
-					<p:outputLabel value="Período Inicial:" />
-					<h:outputText value="#{contratacaoBean.cuidador.periodoInicial}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:outputText>
+						<p:column headerText="Período Inicial">
+							<h:outputText value="#{cursor1.periodoInicial}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
 
-					<p:outputLabel value="Período Final:" />
-					<h:outputText value="#{contratacaoBean.cuidador.periodoFinal}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:outputText>
+						<p:column headerText="Período Final">
+							<h:outputText value="#{cursor1.periodoFinal}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
 
-					<p:outputLabel value="O que foi Feito:" />
-					<p:outputLabel value="#{contratacaoBean.cuidador.descricao}"
-						rows="5" cols="30" autoResize="false" />
-				</p:panelGrid>
+						<p:column headerText="Experiência">
+							<p:inputTextarea value="#{cursor1.descricao}" rows="5" cols="27"
+								maxlength="300" autoResize="false" readonly="true" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
 			</h:form>
 		</p:dialog>
 
@@ -115,14 +125,17 @@
 				<h:panelGrid id="painelNotificacao" columns="1">
 
 					<h:outputText id="display" style="font-size: 10px" />
-					<p:inputTextarea value="#{contratacaoBean.cuidador.notificacao}"
-						rows="5" cols="30" counter="display" maxlength="300"
+					<p:inputTextarea value="#{contratacaoBean.notificacaoAux}" rows="5"
+						cols="30" counter="display" maxlength="300"
 						counterTemplate="{0} Caracteres" autoResize="false" />
 
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Enviar" />
+					<p:commandButton value="Enviar"
+						actionListener="#{contratacaoBean.notificaPessoa}"
+						update=":mensagem :formListagem:panel"
+						onclick="PF('dlgNotificacao').hide();" />
 					<p:commandButton value="Cancelar"
 						onclick="PF('dlgNotificacao').hide();" />
 				</h:panelGrid>
@@ -134,7 +147,7 @@
 			appendTo="@(body)" styleClass="topConteudo">
 			<h:form id="formContratacao">
 				<h:panelGrid id="painelContratacao" columns="2">
-					<p:outputLabel value="Nome:" />
+					<p:outputLabel value="Nome Cuidador:" />
 					<p:outputLabel value="#{contratacaoBean.cuidador.pessoa.nome}" />
 
 					<p:outputLabel value="Data Início:" />
@@ -144,15 +157,18 @@
 					<p:outputLabel value="Data Fim:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" locale="pt_BR"
 						value="#{contratacaoBean.contratacao.dataFimContratacao}" />
-
-					<p:outputLabel value="Valor total:" />
-					<p:outputLabel />
-				</h:panelGrid>
-
-				<h:panelGrid columns="2">
-					<p:commandButton value="Finalizar" />
+					<p:commandButton value="Calcular"
+						actionListener="#{contratacaoBean.contrataCuidador}"
+						update=":mensagem :formContratacao:panel3" />
 					<p:commandButton value="Cancelar"
 						onclick="PF('dlgContratacao').hide();" />
+				</h:panelGrid>
+
+				<h:panelGrid id="panel3" columns="2">
+					<p:outputLabel value="Valor total:" />
+					<p:outputLabel id="total"
+						value="#{contratacaoBean.contratacao.valorFinal}" />
+					<p:commandButton value="Finalizar" />
 				</h:panelGrid>
 
 			</h:form>

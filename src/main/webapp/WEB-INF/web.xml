@@ -18,9 +18,15 @@
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
 
-	<!-- Temas do Prime face -->
+	<!-- Temas do Primefaces -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>glass-x</param-value>
+	</context-param>
+
+	<!-- Definição do mecanismo de download -->
+	<context-param>
+		<param-name>primefaces.UPLOADER</param-name>
+		<param-value>native</param-value>
 	</context-param>
 </web-app>

@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
@@ -37,6 +38,9 @@ public class Pessoa extends GenericDomain {
 	@Column(nullable = false, length = 30)
 	private String email;
 
+	@Column(length = 300)
+	private String notificacao;
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cidade cidade;
@@ -47,6 +51,9 @@ public class Pessoa extends GenericDomain {
 
 	@Column(nullable = false)
 	private Character tipo;
+
+	@Transient
+	private String caminho;
 
 	public String getNome() {
 		return nome;
@@ -134,6 +141,22 @@ public class Pessoa extends GenericDomain {
 
 	public void setTipo(Character tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getCaminho() {
+		return caminho;
+	}
+
+	public void setCaminho(String caminho) {
+		this.caminho = caminho;
+	}
+
+	public String getNotificacao() {
+		return notificacao;
+	}
+
+	public void setNotificacao(String notificacao) {
+		this.notificacao = notificacao;
 	}
 
 }

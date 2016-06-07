@@ -8,51 +8,23 @@
 	template="/templates/modeloGeral.xhtml">
 
 	<ui:define name="conteudo">
-
-		<h:panelGrid>
-			<p:dialog widgetVar="dlgExperiencia" header="Experiência"
-				closable="true" resizable="false" draggable="true" modal="true"
-				appendTo="@(body)" styleClass="topConteudo">
-				<h:form id="formExperiencia">
-					<p:dialog widgetVar="dlgNotificacao" header="Notificação"
-						onShow="true" closable="true" resizable="false" draggable="false"
-						modal="true" appendTo="@(body)" styleClass="topConteudo">
-						<p:inputTextarea value="#{cursor1.descricao}" rows="5" cols="30"
-							maxlength="300" autoResize="false" readonly="true" />
-					</p:dialog>
-				</h:form>
-			</p:dialog>
-<!-- 						rendered="#{pessoaBean.pessoa.tipo == 'T'.charAt(0) and contratacaoBean.cuidador.notificacao != null}"> -->
-<!-- 						<p:dialog widgetVar="dlgNotificacao" header="Notificação" -->
-<!-- 				onShow="true" closable="true" resizable="false" draggable="false" -->
-<!-- 				modal="true" appendTo="@(body)" styleClass="topConteudo"> -->
-<!-- 				<p:inputTextarea value="#{cursor1.descricao}" rows="5" cols="30" -->
-<!-- 					maxlength="300" autoResize="false" readonly="true" /> -->
-<!-- 			</p:dialog> -->
-		</h:panelGrid>
-
 		<div id="header-wrapper">
-			<p:graphicImage library="images" name="imagen1.jpg"
+			<p:graphicImage library="images" name="header-bg.jpg"
 				styleClass="imagemCentralizada" />
 
 			<div id="header" class="container">
 				<div id="logos">
 					<h1>Cuidadores Já !</h1>
-					<h2>
-						Encontre aqui <br></br>o seu anjo da guarda
-					</h2>
-
+					<h2>Encontre aqui o seu anjo da guarda</h2>
+					<h1 class="h1logo">Iremos te ajudar</h1>
 				</div>
-
-
-
 
 			</div>
 			<div class="interface">
+			
+				<h3 class="direita">Atualizado em 29/Março/2016</h3>
 
-				<h3 class="direita">Atualizado em 23/Maio/2016</h3>
-
-				<h2>O que é ?</h2>
+				<h2>O que é</h2>
 
 				<p>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O <span
@@ -60,7 +32,12 @@
 					você e seus entes queridos a viver em casa com segurança, conforto
 					e alívio. Com as soluções de cuidados domiciliares <span
 						style="font-weight: bold;">Cuidadores Já</span>, você recebe
-					serviços que atendem aos mais altos padrões do mercado.
+					serviços que atendem aos mais altos padrões do mercado. Através de
+					planos de cuidados personalizados, formatados em períodos de até 24
+					horas por dia, 7 dias por semana, uma equipe de cuidadores de
+					idosos profissionais, supervisionados por uma gerontóloga, vai lhe
+					substituir nas tarefas de zelo e cuidados de seu familiar idoso ou
+					enfermo.
 				</p>
 
 				<h2>Como trabalhar</h2>
@@ -82,13 +59,11 @@
 
 
 			</div>
-			<h:panelGroup rendered="#{autenticacaoBean.usuarioLogado == null}">
-				<div id="banner" class="container">
-					<ul class="actions">
-						<li><a href="autenticacao.jsf" class="button">Login</a></li>
-					</ul>
-				</div>
-			</h:panelGroup>
+			<div id="banner" class="container">
+				<ul class="actions">
+					<li><a href="autenticacao.jsf" class="button">Login</a></li>
+				</ul>
+			</div>
 		</div>
 		<div id="wrapper">
 			<div id="three-column" class="container">

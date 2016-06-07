@@ -24,7 +24,7 @@ public class Cuidador extends GenericDomain {
 	@Column(nullable = false, length = 15)
 	private String disponibilidade;
 
-	@Column(nullable = false, precision = 4, scale = 2)
+	@Column(nullable = false, precision = 5, scale = 2)
 	private BigDecimal valorDiaContratacao;
 
 	@Column(nullable = false, length = 50)
@@ -41,14 +41,11 @@ public class Cuidador extends GenericDomain {
 	@Column(nullable = false)
 	private Date periodoFinal;
 
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Boolean trabalhoAqui;
 
 	@Column(nullable = false, length = 300)
 	private String descricao;
-
-	@Column(length = 300)
-	private String notificacao;
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -128,14 +125,6 @@ public class Cuidador extends GenericDomain {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public String getNotificacao() {
-		return notificacao;
-	}
-
-	public void setNotificacao(String notificacao) {
-		this.notificacao = notificacao;
 	}
 
 }

@@ -7,26 +7,31 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template="/templates/modeloGeral.xhtml">
 	<ui:define name="conteudo">
-		<h:form>
-			<p:dialog header="Autenticação" closable="false" resizable="false"
-				draggable="true" modal="true" visible="true" appendTo="@(body)">
-				<h:panelGrid columns="2" styleClass="topConteudo">
+		<p:dialog header="Autenticação" closable="false" draggable="true"
+			modal="true" resizable="false" visible="true" appendTo="@(body) ">
+			<h:form>
+				<h:panelGrid id="panel" columns="2" styleClass="topConteudo">
 					<p:outputLabel for="cpf" value="CPF:" />
-					<p:inputMask id="cpf" value="" mask="999.999.999-99" size="12"
-						required="true" requiredMessage="O campo CPF é Obrigatório"></p:inputMask>
+					<p:inputMask id="cpf" mask="999.999.999-99" required="true"
+						requiredMessage="O campo CPF é Obrigatório" size="13"
+						value="#{autenticacaoBean.usuario.pessoa.cpf}" />
 
 					<p:outputLabel for="senha" value="Senha:" />
-					<p:password id="senha" value="" size="20" maxlength="8"
-						required="true" requiredMessage="O Campo Senha é Obrigatório"></p:password>
+					<p:password id="senha" required="true"
+						requiredMessage="Campo Senha é Obrigatório" size="20"
+						maxlength="8"
+						value="#{autenticacaoBean.usuario.senhaSemCriptografia}" />
 				</h:panelGrid>
-				<h:panelGrid columns="2" styleClass="topConteudo">
-					<p:commandButton value="Entrar" update=":mensagem"></p:commandButton>
-					<p:commandButton value="Cancelar" update=":mensagem"
-						action="#{autenticacaoBean.paginaPrincipal}" process="@this" />
-				</h:panelGrid>
-			</p:dialog>
-		</h:form>
 
+				<h:panelGrid columns="2" styleClass="topConteudo">
+					<p:commandButton value="Entrar"
+						action="#{autenticacaoBean.autenticar}" update=":mensagem" />
+					<p:commandButton value="Cancelar"
+						action="#{autenticacaoBean.paginaPrincipal}" process="@this"
+						update=":mensagem" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>
 </html>

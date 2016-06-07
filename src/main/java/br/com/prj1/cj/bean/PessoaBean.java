@@ -1,6 +1,11 @@
 package br.com.prj1.cj.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +13,17 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Messages;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import br.com.prj1.cj.dao.CidadeDAO;
 import br.com.prj1.cj.dao.ContratanteDAO;
+import br.com.prj1.cj.dao.CuidadorDAO;
 import br.com.prj1.cj.dao.EstadoDAO;
 import br.com.prj1.cj.dao.PessoaDAO;
+import br.com.prj1.cj.dao.UsuarioDAO;
 import br.com.prj1.cj.domain.Cidade;
 import br.com.prj1.cj.domain.Contratante;
 import br.com.prj1.cj.domain.Cuidador;
@@ -188,13 +198,7 @@ public class PessoaBean implements Serializable {
 			Messages.addGlobalError("Para adicionar preencha todos os dados da Experiência!");
 		} else {
 			cuidadores.add(cuidador);
-
-			cuidador.setNomePaciente(null);
-			cuidador.setPeriodoInicial(null);
-			cuidador.setPeriodoFinal(null);
-			cuidador.setTelefonePaciente(null);
-			cuidador.setTrabalhoAqui(null);
-			cuidador.setDescricao(null);
+			cuidador = new Cuidador();
 			contador = contador + 1;
 
 			for (Cuidador listaCuidador : cuidadores) {
@@ -213,6 +217,7 @@ public class PessoaBean implements Serializable {
 	public void salvaContratante() {
 		PessoaDAO pessoaDAO = new PessoaDAO();
 
+		System.out.println("entrou no contratante");
 		try {
 			pessoaDAO.salvar(pessoa);
 		} catch (RuntimeException erro) {
@@ -221,16 +226,101 @@ public class PessoaBean implements Serializable {
 		}
 
 		usuario.setPessoa(pessoa);
+
+		SimpleHash hash = new SimpleHash("md5", usuario.getSenhaSemCriptografia());
+		usuario.setSenha(hash.toHex());
+
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		try {
+			usuarioDAO.salvar(usuario);
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar salvar Usuário");
+		}
 		contratante.setPessoa(pessoa);
 
 		ContratanteDAO contratanteDAO = new ContratanteDAO();
 
 		try {
 			contratanteDAO.salvar(contratante);
+			Path origem = Paths.get(pessoa.getCaminho());
+			Path destino = Paths
+					.get("C:/Users/IBM_ADMIN/Documents/Documents/Pessoal/Programacao Java Web/ProgramacaoWeb_v3_SergioDelfino/Desenvolvimento/Workspace/cj/src/main/webapp/resources/images/"
+							+ pessoa.getCodigo() + ".png");
+			Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
 			novo();
 			Messages.addGlobalInfo("O Cadastro foi salvo com sucesso");
+		} catch (RuntimeException | IOException erro) {
+			Messages.addGlobalError("Erro ao tentar salvar o cadastro Contratante");
+			erro.printStackTrace();
+		}
+	}
+
+	public void salvaCuidador() {
+		PessoaDAO pessoaDAO = new PessoaDAO();
+
+		try {
+			pessoaDAO.salvar(pessoa);
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Erro ao tentar salvar o cadastro");
+			Messages.addGlobalError("Erro ao tentar salvar a Pessoa");
+			erro.printStackTrace();
+		}
+
+		usuario.setPessoa(pessoa);
+
+		SimpleHash hash = new SimpleHash("md5", usuario.getSenhaSemCriptografia());
+		usuario.setSenha(hash.toHex());
+
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		try {
+			usuarioDAO.salvar(usuario);
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar salvar Usuário");
+		}
+
+		cuidador.setPessoa(pessoa);
+		String dispo = "";
+		for (String disp : periodosSelecionados) {
+			dispo = dispo + disp;
+		}
+		cuidador.setDisponibilidade(dispo);
+		System.out.println(dispo);
+
+		CuidadorDAO cuidadorDAO = new CuidadorDAO();
+
+		for (Cuidador listaCuidador : cuidadores) {
+			cuidador.setNomePaciente(listaCuidador.getNomePaciente());
+			cuidador.setTelefonePaciente(listaCuidador.getTelefonePaciente());
+			cuidador.setPeriodoInicial(listaCuidador.getPeriodoInicial());
+			cuidador.setPeriodoFinal(listaCuidador.getPeriodoFinal());
+			cuidador.setDescricao(listaCuidador.getDescricao());
+
+			try {
+				cuidadorDAO.salvar(cuidador);
+				Path origem = Paths.get(pessoa.getCaminho());
+				Path destino = Paths
+						.get("C:/Users/IBM_ADMIN/Documents/Documents/Pessoal/Programacao Java Web/ProgramacaoWeb_v3_SergioDelfino/Desenvolvimento/Workspace/cj/src/main/webapp/resources/images/"
+								+ pessoa.getCodigo() + ".png");
+				Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
+				Messages.addGlobalInfo("O Cadastro foi salvo com sucesso");
+			} catch (RuntimeException | IOException erro) {
+				Messages.addGlobalError("Erro ao tentar salvar o cadastro do Cuidador");
+				erro.printStackTrace();
+			}
+		}
+		novo();
+	}
+
+	public void upload(FileUploadEvent evento) {
+		try {
+			UploadedFile arquivoUpload = evento.getFile();
+			Path arquivoTemp = Files.createTempFile(null, null);
+			Files.copy(arquivoUpload.getInputstream(), arquivoTemp, StandardCopyOption.REPLACE_EXISTING);
+			pessoa.setCaminho(arquivoTemp.toString());
+
+		} catch (IOException erro) {
+			Messages.addGlobalInfo("Ocorreu um erro ao tentar fazer Upload do arquivo");
 			erro.printStackTrace();
 		}
 	}

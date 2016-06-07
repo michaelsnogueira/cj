@@ -14,3 +14,14 @@ function moeda(z) {
 												// ultimos 2 digitos
 	z.value = v;
 }
+
+function verificarCampos(xhr, status, args, dlg) {
+	if (args.validationFailed) {
+		PF(dlg).jq.effect("shake", {
+			times : 5
+		}, 100);
+	} else {
+		PF(dlg).hide();
+		//PF(tbl).clearFilters();
+	}
+}

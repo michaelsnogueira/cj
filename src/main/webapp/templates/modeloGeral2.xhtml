@@ -16,26 +16,12 @@
 	<p:growl id="mensagem" />
 	<p:layout fullPage="true">
 		<p:layoutUnit position="north" resizable="false" closable="false"
-			rendered="#{autenticacaoBean.usuarioLogado != null}"
-			collapsed="false" style="text-align:center" styleClass="topConteudo">
-			<p:toolbar style="height:18px">
-				<f:facet name="right">
-					<h:outputLabel value="#{autenticacaoBean.pessoa.nome}" style="font-size:10px;" />
-				</f:facet>
-			</p:toolbar>
-
-			<p:notificationBar position="top"
-				rendered="#{autenticacaoBean.usuarioLogado.pessoa.tipo == 'T'.charAt(0) and autenticacaoBean.pessoa.notificacao != null}"
-				effect="slide" styleClass="top" widgetVar="bar">
-				<h:outputText value="#{autenticacaoBean.pessoa.notificacao}"
-					style="font-size:14px;" />
-			</p:notificationBar>
-
+			collapsed="false" header="Sistema de Gerenciamento Cuidadores Já!"
+			style="text-align:center" styleClass="topConteudo">
 		</p:layoutUnit>
 
 		<p:layoutUnit position="west" resizable="false" closable="false"
-			collapsed="false" size="300" style="text-align:center">
-
+			collapsed="false" size="220" style="text-align:center">
 			<div class="marcaMenu">Menu</div>
 			<div id="cabecalho" class="menu">
 				<h:form id="formTemplate">
@@ -67,32 +53,19 @@
 								<p:menuitem value="Avaliação" icon="ui-icon-comment"
 									outcome="/pages/avaliacoes.xhtml" />
 								<p:menuitem value="Contratar Cuidador" icon="ui-icon-comment"
-									rendered="#{autenticacaoBean.usuarioLogado.pessoa.tipo == 'C'.charAt(0) or autenticacaoBean.usuarioLogado.pessoa.tipo == 'A'.charAt(0)}"
+									rendered="#{autenticacaoBean.usuarioLogado.pessoa.tipo == 'C'.charAt(0)}"
 									outcome="/pages/contratacao.xhtml" />
 							</p:submenu>
 						</p:menubar>
 					</h:panelGrid>
-					<p:commandButton value="Abrir notificação"
-						rendered="#{autenticacaoBean.usuarioLogado.pessoa.tipo == 'T'.charAt(0) and autenticacaoBean.pessoa.notificacao != null}"
-						style="font-size:10px;" onclick="
-						PF('bar').show()"
-						type="button" icon="ui-icon-arrow-1-s" />
-					<p:commandButton value="Fechar Notificação"
-						rendered="#{autenticacaoBean.usuarioLogado.pessoa.tipo == 'T'.charAt(0) and autenticacaoBean.pessoa.notificacao != null}"
-						style="font-size:10px;" onclick="
-						PF('bar').hide()"
-						type="button" icon="ui-icon-arrow-1-n" />
 				</h:form>
 			</div>
-
 
 			<div id="topo" class="divTopo">
 				<p:graphicImage library="images" name="img-idoso.jpg"
 					styleClass="imagemMenu" />
-
 			</div>
 		</p:layoutUnit>
-
 
 		<div id="conteudo" class="divConteudo">
 			<p:layoutUnit position="center" resizable="false" closable="false"
