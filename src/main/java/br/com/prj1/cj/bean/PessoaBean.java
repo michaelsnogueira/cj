@@ -46,6 +46,7 @@ public class PessoaBean implements Serializable {
 	private Integer contador;
 	private Contratante contratante;
 	private Usuario usuario;
+	private List<Pessoa> pessoas;
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -125,6 +126,14 @@ public class PessoaBean implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public List<Pessoa> getPessoas() {
+		return pessoas;
+	}
+
+	public void setPessoas(List<Pessoa> pessoas) {
+		this.pessoas = pessoas;
 	}
 
 	@PostConstruct
@@ -217,6 +226,19 @@ public class PessoaBean implements Serializable {
 	public void salvaContratante() {
 		PessoaDAO pessoaDAO = new PessoaDAO();
 
+		try {
+			pessoas = pessoaDAO.listar();
+
+			for (Pessoa pessoaLista : pessoas) {
+				if (pessoaLista.getCpf().equals(this.pessoa.getCpf())) {
+					Messages.addGlobalError("Este CPF: " + this.pessoa.getCpf() + " Já existe. Favor fazer o Login");
+					return;
+				}
+			}
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar listar as pessoas");
+			erro.printStackTrace();
+		}
 		System.out.println("entrou no contratante");
 		try {
 			pessoaDAO.salvar(pessoa);
@@ -243,21 +265,40 @@ public class PessoaBean implements Serializable {
 
 		try {
 			contratanteDAO.salvar(contratante);
+			novo();
+			Messages.addGlobalInfo("O Cadastro foi salvo com sucesso");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar salvar o cadastro Contratante");
+			erro.printStackTrace();
+		}
+
+		try {
 			Path origem = Paths.get(pessoa.getCaminho());
 			Path destino = Paths
 					.get("C:/Users/IBM_ADMIN/Documents/Documents/Pessoal/Programacao Java Web/ProgramacaoWeb_v3_SergioDelfino/Desenvolvimento/Workspace/cj/src/main/webapp/resources/images/"
 							+ pessoa.getCodigo() + ".png");
 			Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
-			novo();
-			Messages.addGlobalInfo("O Cadastro foi salvo com sucesso");
-		} catch (RuntimeException | IOException erro) {
-			Messages.addGlobalError("Erro ao tentar salvar o cadastro Contratante");
-			erro.printStackTrace();
+		} catch (IOException | NullPointerException erro) {
+			Messages.addGlobalWarn("A Imagem não foi salva");
 		}
 	}
 
 	public void salvaCuidador() {
 		PessoaDAO pessoaDAO = new PessoaDAO();
+
+		try {
+			pessoas = pessoaDAO.listar();
+
+			for (Pessoa pessoaLista : pessoas) {
+				if (pessoaLista.getCpf().equals(this.pessoa.getCpf())) {
+					Messages.addGlobalError("Este CPF: " + this.pessoa.getCpf() + " Já existe. Favor fazer o Login");
+					return;
+				}
+			}
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar listar as pessoas");
+			erro.printStackTrace();
+		}
 
 		try {
 			pessoaDAO.salvar(pessoa);

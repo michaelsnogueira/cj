@@ -70,6 +70,8 @@
 							onclick="PF('dlgContratacao').show();"
 							update=":mensagem :formContratacao:painelContratacao">
 							<f:attribute name="selecionaCuidador" value="#{cursor}"></f:attribute>
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
@@ -150,25 +152,41 @@
 					<p:outputLabel value="Nome Cuidador:" />
 					<p:outputLabel value="#{contratacaoBean.cuidador.pessoa.nome}" />
 
-					<p:outputLabel value="Data Início:" />
-					<p:calendar pattern="dd/MM/yyyy" mask="true" locale="pt_BR"
-						value="#{contratacaoBean.contratacao.dataInicioContratacao}" />
+					<p:outputLabel for="inicio" value="Data Início:" />
+					<p:calendar id="inicio" pattern="dd/MM/yyyy" mask="true"
+						locale="pt_BR"
+						value="#{contratacaoBean.contratacao.dataInicioContratacao}"
+						required="true"
+						requiredMessage="O Campo Data Inicio é Obrigatório"
+						converterMessage="Data Inicio fora do Padrão. Favor verificar" />
 
-					<p:outputLabel value="Data Fim:" />
-					<p:calendar pattern="dd/MM/yyyy" mask="true" locale="pt_BR"
-						value="#{contratacaoBean.contratacao.dataFimContratacao}" />
+					<p:outputLabel for="fim" value="Data Fim:" />
+					<p:calendar id="fim" pattern="dd/MM/yyyy" mask="true"
+						locale="pt_BR"
+						value="#{contratacaoBean.contratacao.dataFimContratacao}"
+						required="true" requiredMessage="O campo Data Fim é Obrigatório"
+						converterMessage="Data Fim fora do Padrão. Favor verificar" />
 					<p:commandButton value="Calcular"
 						actionListener="#{contratacaoBean.contrataCuidador}"
-						update=":mensagem :formContratacao:panel3" />
+						update=":mensagem :formContratacao:panel3 :formContratacao:painelContratacao" />
 					<p:commandButton value="Cancelar"
+						actionListener="#{contratacaoBean.novo}"
 						onclick="PF('dlgContratacao').hide();" />
 				</h:panelGrid>
 
 				<h:panelGrid id="panel3" columns="2">
-					<p:outputLabel value="Valor total:" />
+					<p:outputLabel value="Valor total: R$ " />
 					<p:outputLabel id="total"
-						value="#{contratacaoBean.contratacao.valorFinal}" />
-					<p:commandButton value="Finalizar" />
+						value="#{contratacaoBean.contratacao.valorFinal}">
+						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+					</p:outputLabel>
+					<p:commandButton value="Finalizar"
+						actionListener="#{contratacaoBean.finalizaContratacao}"
+						oncomplete="verificar2(xhr, status, args,'dlgContratacao')"
+						update=":mensagem :formListagem:panel :formContratacao">
+						<f:attribute name="selecionaContratante"
+							value="#{autenticacaoBean.usuarioLogado.pessoa.codigo}"></f:attribute>
+					</p:commandButton>
 				</h:panelGrid>
 
 			</h:form>

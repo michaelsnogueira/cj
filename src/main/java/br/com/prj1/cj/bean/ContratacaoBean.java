@@ -15,9 +15,11 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
+import br.com.prj1.cj.dao.ContratacaoDAO;
 import br.com.prj1.cj.dao.CuidadorDAO;
 import br.com.prj1.cj.dao.PessoaDAO;
 import br.com.prj1.cj.domain.Contratacao;
+import br.com.prj1.cj.domain.Contratante;
 import br.com.prj1.cj.domain.Cuidador;
 import br.com.prj1.cj.domain.Pessoa;
 
@@ -32,6 +34,8 @@ public class ContratacaoBean implements Serializable {
 	private List<Cuidador> listaExperiencia;
 	private String notificacaoAux;
 	private Pessoa pessoa;
+	private Contratante contratante;
+	private List<Contratacao> contratacoes;
 
 	public List<Cuidador> getCuidadores() {
 		return cuidadores;
@@ -87,6 +91,27 @@ public class ContratacaoBean implements Serializable {
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public Contratante getContratante() {
+		return contratante;
+	}
+
+	public void setContratante(Contratante contratante) {
+		this.contratante = contratante;
+	}
+
+	public List<Contratacao> getContratacoes() {
+		return contratacoes;
+	}
+
+	public void setContratacoes(List<Contratacao> contratacoes) {
+		this.contratacoes = contratacoes;
+	}
+
+	public void novo() {
+		contratacao = new Contratacao();
+		contratacao.setValorFinal(new BigDecimal("0.00"));
 	}
 
 	@PostConstruct
@@ -164,13 +189,20 @@ public class ContratacaoBean implements Serializable {
 
 		if (contratacao.getDataInicioContratacao().before(new Date())
 				|| contratacao.getDataInicioContratacao().after(contratacao.getDataFimContratacao())) {
-			Messages.addGlobalError("Favor inserir a data no intervalo Correto. Favor inserir a data inicio no próximo dia");
+			Messages.addGlobalError(
+					"Favor inserir a data no intervalo Correto. Favor inserir a data inicio no próximo dia");
 		} else {
 
 			long dt = (contratacao.getDataFimContratacao().getTime() - contratacao.getDataInicioContratacao().getTime())
 					+ 3600000;
 
 			dt = dt / 86400000L;
+
+			if (dt == 0) {
+				dt = 1;
+			} else {
+				dt = dt + 1;
+			}
 			BigDecimal dias = new BigDecimal(dt);
 
 			System.out.println("Dias: " + dt);
@@ -179,6 +211,60 @@ public class ContratacaoBean implements Serializable {
 
 			System.out.println("Valor Total: " + contratacao.getValorFinal());
 		}
+	}
+
+	public void finalizaContratacao(ActionEvent evento) {
+		BigDecimal valor = new BigDecimal("0.00");
+		if (contratacao.getValorFinal().equals(valor)) {
+			Messages.addGlobalError("Favor escolher as datas da contratação e clicar em Calcular.");
+		} else {
+//			if (buscaDataDisponivel()) {
+				ContratacaoDAO contratacaoDAO = new ContratacaoDAO();
+				contratacao.setCuidador(cuidador);
+
+				try {
+					contratante = contratacaoDAO.buscarContratante(
+							(Long) evento.getComponent().getAttributes().get("selecionaContratante"));
+					contratacao.setContratante(contratante);
+				} catch (RuntimeException erro) {
+					Messages.addGlobalError("Erro ao tentar buscar o Contratante");
+				}
+
+				try {
+					contratacaoDAO.salvar(contratacao);
+					listarCuidadores();
+					Messages.addGlobalInfo("Contratacao Efetivada com Sucesso");
+				} catch (RuntimeException erro) {
+					Messages.addGlobalError("Erro ao tentar efetivar a contratação");
+					erro.printStackTrace();
+				}
+			//}
+		}
+	}
+
+	public boolean buscaDataDisponivel() {
+		ContratacaoDAO contratacaoDAO = new ContratacaoDAO();
+		boolean retorno = true;
+
+		try {
+			contratacoes = contratacaoDAO.listar();
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao listar as Contratações");
+			erro.printStackTrace();
+		}
+
+		for (Contratacao contratacao : contratacoes) {
+			if (this.contratacao.getDataInicioContratacao().before(contratacao.getDataFimContratacao())
+					|| this.contratacao.getDataInicioContratacao().after(contratacao.getDataInicioContratacao())) {
+				if (contratacao.getDataInicioContratacao().after(new Date()))
+					Messages.addGlobalError(
+							"Favor marcar no período antes do dia " + contratacao.getDataInicioContratacao().getDay());
+				Messages.addGlobalError("Ou depois do dia " + contratacao.getDataFimContratacao().getDate());
+				retorno = false;
+				break;
+			}
+		}
+		return retorno;
 	}
 
 }

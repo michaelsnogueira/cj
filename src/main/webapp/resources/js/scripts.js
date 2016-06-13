@@ -7,6 +7,15 @@ function verificar(xhr, status, args, dlg) {
 	}
 }
 
+function verificar2(xhr, status, args, dlg) {
+	if (args.validationFailed) {
+		PF(dlg).show();
+	} else {
+		PF(dlg).hide();
+		// PF(tbl).clearFilters();
+	}
+}
+
 function moeda(z) {
 	v = z.value;
 	v = v.replace(/\D/g, "") // permite digitar apenas numero

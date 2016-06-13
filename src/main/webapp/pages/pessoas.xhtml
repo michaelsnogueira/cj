@@ -28,7 +28,7 @@
 						value="#{pessoaBean.pessoa.cep}" maxlength="9" size="11"
 						required="true" requiredMessage="O campo CEP é Obrigatório" />
 
-					<p:outputLabel for="endereco" value="Endereco" />
+					<p:outputLabel for="endereco" value="Endereço:" />
 					<p:inputText id="endereco" value="#{pessoaBean.pessoa.endereco}"
 						maxlength="50" size="30" required="true"
 						requiredMessage="O campo Endereço é Obrigatório" />
@@ -51,7 +51,8 @@
 					<p:inputText id="email" value="#{pessoaBean.pessoa.email}"
 						maxlength="30" size="20" required="true"
 						requiredMessage="O campo Email é Obrigatório"
-						converterMessage="Email invalido">
+						converterMessage="Email invalido"
+						validatorMessage="Email invalido">
 						<f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
 					</p:inputText>
 
@@ -121,7 +122,7 @@
 
 		<p:dialog widgetVar="dlgCadastroCont" header="Cadastro-Contratante"
 			closable="false" resizable="false" draggable="false" modal="true"
-			appendTo="@(body)" styleClass="topConteudo">
+			appendTo="@(body)" styleClass="topConteudo" style="font-size: 90%">
 			<h:form id="formCadastroContratante" enctype="multipart/form-data">
 				<h:panelGrid id="panelContratante" columns="2">
 
@@ -170,9 +171,9 @@
 			</h:form>
 		</p:dialog>
 
-		<p:dialog widgetVar="dlgCadastroCuid" header="Cadastro-Cuidador"
-			closable="false" resizable="false" draggable="false" modal="true"
-			appendTo="@(body)" styleClass="topConteudo">
+		<p:dialog widgetVar="dlgCadastroCuid" header="Cadastro-Cuidador" 
+			closable="false" resizable="false" draggable="true" modal="true"
+			appendTo="@(body)" styleClass="topConteudo" style="font-size: 90%" >
 			<h:form id="formCadastroCuidador" enctype="multipart/form-data">
 				<h:panelGrid id="panelCuidador" columns="2">
 					<p:outputLabel value="Nome:" />
@@ -212,7 +213,7 @@
 						<p:ajax listener="#{pessoaBean.listaDisponibilidade}" />
 					</p:selectManyCheckbox>
 
-					<p:outputLabel for="valor" value="Valor Contração ao Dia:" />
+					<p:outputLabel for="valor" value="Valor Contração ao Dia: R$ " />
 					<p:inputText id="valor"
 						value="#{pessoaBean.cuidador.valorDiaContratacao}" required="true"
 						requiredMessage="O Valor Contratação é Obrigatório" maxlength="6"
@@ -222,7 +223,7 @@
 					</p:inputText>
 
 					<p:outputLabel for="foto" value="Foto:" />
-					<p:fileUpload id="foto" mode="advanced"
+					<p:fileUpload id="foto" mode="advanced" style="font-size: 80%"
 						fileUploadListener="#{pessoaBean.upload}"></p:fileUpload>
 
 				</h:panelGrid>
@@ -259,7 +260,7 @@
 					<!-- 					<h:outputText /> -->
 					<h:outputText id="display" style="font-size: 10px" />
 
-					<p:outputLabel value="O que foi Feito:" />
+					<p:outputLabel value="Experiência:" />
 					<p:inputTextarea value="#{pessoaBean.cuidador.descricao}" rows="5"
 						cols="30" counter="display" maxlength="300"
 						counterTemplate="{0} Caracteres" autoResize="false" />
